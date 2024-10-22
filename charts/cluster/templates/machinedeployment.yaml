@@ -7,11 +7,11 @@ metadata:
     cluster.x-k8s.io/cluster-api-autoscaler-node-group-min-size: {{ .Values.autoscaler.size.min | quote }}
   {{- end }}
   labels:
-    cluster.x-k8s.io/cluster-name: {{ .Values.clusterName | quote }}
-  name: "{{ .Values.clusterName }}-md-0"
+    cluster.x-k8s.io/cluster-name: {{ .Values.cluster.name | quote }}
+  name: "{{ .Values.cluster.name }}-md-0"
   namespace: {{ .Values.namespace | quote }}
 spec:
-  clusterName: {{ .Values.clusterName | quote }}
+  cluster.name: {{ .Values.clusterName | quote }}
   {{- if not .Values.autoscaler.enabled }}
   replicas: {{ .Values.worker.machineCount }}
   {{- end }}
@@ -20,16 +20,16 @@ spec:
   template:
     metadata:
       labels:
-        cluster.x-k8s.io/cluster-name: {{ .Values.clusterName | quote }}
+        cluster.x-k8s.io/cluster-name: {{ .Values.cluster.name | quote }}
     spec:
       bootstrap:
         configRef:
           apiVersion: bootstrap.cluster.x-k8s.io/v1alpha3
           kind: TalosConfigTemplate
-          name: "{{ .Values.clusterName }}-md-0"
-      clusterName: {{ .Values.clusterName | quote }}
+          name: "{{ .Values.cluster.name }}-md-0"
+      cluster.name: {{ .Values.clusterName | quote }}
       infrastructureRef:
         apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
         kind: VSphereMachineTemplate
-        name: "{{ .Values.clusterName }}-worker"
+        name: "{{ .Values.cluster.name }}-worker"
       version: {{ .Values.kubernetesVersion | quote }}

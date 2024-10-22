@@ -2,15 +2,18 @@ apiVersion: cluster.x-k8s.io/v1beta1
 kind: Cluster
 metadata:
   labels:
-    cluster.x-k8s.io/cluster-name: {{ .Values.clusterName | quote }}
-  name: {{ .Values.clusterName | quote }}
+    cluster.x-k8s.io/cluster-name: {{ .Values.cluster.name | quote }}
+    {{- if eq .Values.cluster.type "management" }}
+    management: true
+    {{- end }}
+  name: {{ .Values.cluster.name | quote }}
   namespace: {{ .Values.namespace | quote }}
 spec:
   controlPlaneRef:
     apiVersion: controlplane.cluster.x-k8s.io/v1alpha3
     kind: TalosControlPlane
-    name: {{ .Values.clusterName | quote }}
+    name: {{ .Values.cluster.name | quote }}
   infrastructureRef:
     apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
     kind: VSphereCluster
-    name: {{ .Values.clusterName | quote }}
+    name: {{ .Values.cluster.name | quote }}

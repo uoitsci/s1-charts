@@ -1,5 +1,7 @@
 # Cluster Configuration
-clusterName: prod
+cluster:
+  name: prod
+  type: workload
 
 # Namespace Configuration
 namespace: default
