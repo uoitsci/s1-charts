@@ -1,0 +1,49 @@
+# Cluster Configuration
+clusterName: prod
+
+# Namespace Configuration
+namespace: default
+
+# Kubernetes Version
+kubernetesVersion: v1.31.1
+
+# Control Plane Configuration
+controlPlane:
+  machineCount: 3
+  diskGB: 50
+  memoryMB: 8192
+  cpuNum: 2
+
+# Worker Machine Configuration
+worker:
+  machineCount: 3
+  diskGB: 200
+  memoryMB: 16384
+  cpuNum: 8
+
+autoscaler:
+  enabled: true
+  size:
+    min: 2
+    max: 10
+
+# Control Plane Endpoint Configuration
+controlPlaneEndpointIP: 192.168.0.1
+controlPlaneEndpointPort: 6443
+
+# NTP Servers
+ntpServers: 
+  - time.google.com
+
+# vSphere Configuration
+vsphere:
+  server: "your-vsphere-server"
+  tlsThumbprint: "YOUR_TLS_THUMBPRINT"
+  datacenter: "datacenter-name"
+  datastore: "datastore-name"
+  folder: "folder-name"
+  network: "network-name"
+  networkPublic: "network-public-name"
+  resourcePool: ""
+  storagePolicy: ""
+  template: "talos-v1.8.0"

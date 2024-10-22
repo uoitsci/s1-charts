@@ -1,0 +1,47 @@
+apiVersion: bootstrap.cluster.x-k8s.io/v1alpha3
+kind: TalosConfigTemplate
+metadata:
+  name: {{ .Values.clusterName }}-md-0
+  namespace: {{ .Values.namespace | quote }}
+spec:
+  template:
+    spec:
+      configPatches:
+      - op: add
+        path: /machine/network
+        value:
+          interfaces:
+          - dhcp: true
+            interface: eth0
+          - dhcp: false
+            interface: eth1
+      - op: add
+        path: /cluster/externalCloudProvider
+        value:
+          enabled: true
+      - op: add
+        path: /machine/install
+        value:
+          extraKernelArgs:
+          - net.ifnames=0
+      - op: add
+        path: /cluster/proxy
+        value:
+          disabled: true
+      - op: add
+        path: /cluster/discovery
+        value:
+          enabled: true
+      - op: replace
+        path: /cluster/controlPlane
+        value:
+          endpoint: "https://{{ .Values.controlPlaneEndpointIP }}:{{ .Values.controlPlaneEndpointPort }}"
+      - op: add
+        path: /machine/certSANs
+        value:
+        - {{ .Values.controlPlaneEndpointIP | quote }}
+      - op: add
+        path: /machine/time
+        value:
+          servers: {{ .Values.ntpServers }}
+      generateType: worker

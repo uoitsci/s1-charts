@@ -1,0 +1,74 @@
+apiVersion: addons.cluster.x-k8s.io/v1alpha1
+kind: HelmChartProxy
+metadata:
+  name: cilium
+spec:
+  clusterSelector:
+  # Target workload clusters with specific labels.
+  #  matchLabels:
+  #    calicoCNI: enabled
+  # Target all workload clusters.
+    matchLabels: {}
+  releaseName: cilium
+  version: 1.17.0-pre.1
+  repoURL: https://helm.cilium.io/
+  chartName: cilium
+  namespace: kube-system
+  valuesTemplate: |
+    ipam:
+      mode: kubernetes
+
+    # Default agent config adds SYS_MODULE over Talos suggested config (both)
+    securityContext:
+      capabilities:
+        ciliumAgent:
+          - CHOWN
+          - KILL
+          - NET_ADMIN
+          - NET_RAW
+          - IPC_LOCK
+          - SYS_ADMIN
+          - SYS_RESOURCE
+          - DAC_OVERRIDE
+          - FOWNER
+          - SETGID
+          - SETUID
+        cleanCiliumState:
+          - NET_ADMIN
+          - SYS_ADMIN
+          - SYS_RESOURCE
+
+    cgroup:
+      autoMount:
+        enabled: false
+      hostRoot: /sys/fs/cgroup
+
+    k8sServiceHost: localhost
+    k8sServicePort: 7445
+    kubeProxyReplacement: true
+    hubble:
+      relay:
+        enabled: true
+      ui:
+        enabled: true
+
+    ipv4NativeRoutingCIDR: 10.0.0.0/9
+
+    l2announcements:
+      enabled: true
+
+    gatewayAPI:
+      enabled: true
+
+    bpf:
+      masquerade: true
+      # Workaround for cilium/cilium#31653
+      hostLegacyRouting: true
+      hostRouting: true
+
+    externalIPs:
+      enabled: true
+
+    # Workaround for cilium/cilium#24318
+    endpointRoutes:
+      enabled: true

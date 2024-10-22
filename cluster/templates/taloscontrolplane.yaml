@@ -1,0 +1,64 @@
+apiVersion: controlplane.cluster.x-k8s.io/v1alpha3
+kind: TalosControlPlane
+metadata:
+  name: {{ .Values.clusterName | quote }}
+  namespace: {{ .Values.namespace | quote }}
+spec:
+  controlPlaneConfig:
+    controlplane:
+      configPatches:
+      - op: add
+        path: /machine/network
+        value:
+          interfaces:
+          - dhcp: true
+            interface: eth0
+            vip:
+              ip: {{ .Values.controlPlaneEndpointIP | quote }}
+          - dhcp: false
+            interface: eth1
+      - op: add
+        path: /cluster/externalCloudProvider
+        value:
+          enabled: true
+      - op: add
+        path: /machine/install
+        value:
+          extraKernelArgs:
+          - net.ifnames=0
+      - op: add
+        path: /cluster/network/cni
+        value:
+          name: none
+      - op: add
+        path: /cluster/proxy
+        value:
+          disabled: true
+      - op: add
+        path: /cluster/discovery
+        value:
+          enabled: true
+      - op: replace
+        path: /cluster/controlPlane
+        value:
+          endpoint: "https://{{ .Values.controlPlaneEndpointIP }}:{{ .Values.controlPlaneEndpointPort }}"
+      - op: add
+        path: /machine/certSANs
+        value:
+        - {{ .Values.controlPlaneEndpointIP | quote }}
+      - op: add
+        path: /machine/time
+        value:
+          disabled: false
+          servers: {{ .Values.ntpServers }}
+      generateType: controlplane
+  infrastructureTemplate:
+    apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
+    kind: VSphereMachineTemplate
+    name: {{ .Values.clusterName }}
+  replicas: {{ .Values.controlPlane.machineCount }}
+  rolloutStrategy:
+    rollingUpdate:
+      maxSurge: 1
+    type: RollingUpdate
+  version: {{ .Values.kubernetesVersion | quote }}

@@ -1,0 +1,6 @@
+apiVersion: v2
+name: cluster
+description: Helm chart for creating Cluster API resources for Talos and vSphere
+type: application
+version: 0.1.0
+appVersion: "v1.0"
