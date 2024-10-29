@@ -4,7 +4,7 @@ metadata:
   labels:
     cluster.x-k8s.io/cluster-name: {{ .Values.cluster.name | quote }}
     {{- if eq .Values.cluster.type "management" }}
-    management: true
+    management: "true"
     {{- end }}
   name: {{ .Values.cluster.name | quote }}
   namespace: {{ .Values.namespace | quote }}

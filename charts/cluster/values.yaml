@@ -48,4 +48,6 @@ vsphere:
   networkPublic: "network-public-name"
   resourcePool: ""
   storagePolicy: ""
-  template: "talos-v1.8.0"
+  template: "talos-v1.8"
+
+cpiImagek8sVersion: v1.31.0

@@ -11,7 +11,7 @@ metadata:
   name: "{{ .Values.cluster.name }}-md-0"
   namespace: {{ .Values.namespace | quote }}
 spec:
-  cluster.name: {{ .Values.clusterName | quote }}
+  clusterName: {{ .Values.cluster.name | quote }}
   {{- if not .Values.autoscaler.enabled }}
   replicas: {{ .Values.worker.machineCount }}
   {{- end }}
@@ -27,9 +27,9 @@ spec:
           apiVersion: bootstrap.cluster.x-k8s.io/v1alpha3
           kind: TalosConfigTemplate
           name: "{{ .Values.cluster.name }}-md-0"
-      cluster.name: {{ .Values.clusterName | quote }}
+      clusterName: {{ .Values.cluster.name | quote }}
       infrastructureRef:
         apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
         kind: VSphereMachineTemplate
-        name: "{{ .Values.cluster.name }}-worker"
+        name: "{{ .Values.cluster.name }}-worker-{{ .Values.kubernetesVersion }}"
       version: {{ .Values.kubernetesVersion | quote }}
