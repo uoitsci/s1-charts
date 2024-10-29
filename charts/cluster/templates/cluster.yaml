@@ -6,6 +6,7 @@ metadata:
     {{- if eq .Values.cluster.type "management" }}
     management: "true"
     {{- end }}
+    ciliumCNI: enabled
   name: {{ .Values.cluster.name | quote }}
   namespace: {{ .Values.namespace | quote }}
 spec:

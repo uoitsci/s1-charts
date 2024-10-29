@@ -4,9 +4,8 @@ metadata:
   name: cilium
 spec:
   clusterSelector:
-  # Target workload clusters with specific labels.
     matchLabels:
-      cilicoCNI: enabled
+      ciliumCNI: enabled
   releaseName: cilium
   version: 1.17.0-pre.1
   repoURL: https://helm.cilium.io/
