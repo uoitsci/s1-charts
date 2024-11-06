@@ -1,41 +1,23 @@
-# Cluster Configuration
-cluster:
-  name: prod
-  type: workload
-
-# Namespace Configuration
-namespace: default
-
 # Kubernetes Version
-kubernetesVersion: v1.31.1
+versions:
+  kubernetes: v1.31.1
+  talos: v1.8
+  cpi: v1.31.0
 
 # Control Plane Configuration
 controlPlane:
-  machineCount: 3
-  diskGB: 50
-  memoryMB: 8192
-  cpuNum: 2
+  endpointIP: 192.168.0.1
+  endpointPort: 6443
+  replicas: 3
 
 # Worker Machine Configuration
-worker:
-  machineCount: 3
-  diskGB: 200
-  memoryMB: 16384
-  cpuNum: 8
-
-autoscaler:
-  enabled: true
-  size:
-    min: 2
-    max: 10
-
-# Control Plane Endpoint Configuration
-controlPlaneEndpointIP: 192.168.0.1
-controlPlaneEndpointPort: 6443
-
-# NTP Servers
-ntpServers: 
-  - time.google.com
+workers:
+  replicas: 1
+  autoscaler:
+    enabled: true
+    size:
+      min: 1
+      max: 5
 
 # vSphere Configuration
 vsphere:
@@ -48,6 +30,4 @@ vsphere:
   networkPublic: "network-public-name"
   resourcePool: ""
   storagePolicy: ""
-  template: "talos-v1.8"
-
-cpiImagek8sVersion: v1.31.0
+  template: talos-v1.8

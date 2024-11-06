@@ -3,13 +3,13 @@ apiVersion: addons.cluster.x-k8s.io/v1beta1
 kind: ClusterResourceSet
 metadata:
   labels:
-    cluster.x-k8s.io/cluster-name: {{ .Values.cluster.name | quote }}
-  name: "{{ .Values.cluster.name }}-crs-0"
-  namespace: {{ .Values.namespace | quote }}
+    cluster.x-k8s.io/cluster-name: {{ .Release.Name }}
+  name: {{ .Release.Name }}-crs-0
+  namespace: {{ .Release.Namespace }}
 spec:
   clusterSelector:
     matchLabels:
-      cluster.x-k8s.io/cluster-name: {{ .Values.cluster.name | quote }}
+      cluster.x-k8s.io/cluster-name: {{ .Release.Name }}
   resources:
   - kind: Secret
     name: vsphere-config-secret
@@ -23,17 +23,17 @@ spec:
 apiVersion: v1
 kind: Secret
 metadata:
-  name: {{ .Values.cluster.name | quote }}
-  namespace: {{ .Values.namespace | quote }}
+  name: {{ .Release.Name }}
+  namespace: {{ .Release.Namespace }}
 stringData:
-  password: {{ .Values.vsphere.password | quote }}
-  username: {{ .Values.vsphere.username | quote }}
+  password: {{ quote .Values.vsphere.password }}
+  username: {{ quote .Values.vsphere.username }}
 ---
 apiVersion: v1
 kind: Secret
 metadata:
   name: vsphere-config-secret
-  namespace: {{ .Values.namespace | quote }}
+  namespace: {{ .Release.Namespace }}
 stringData:
   data: |-
     apiVersion: v1
@@ -566,6 +566,8 @@ data:
             - --leader-election-renew-deadline=60s
             - --leader-election-retry-period=30s
             - --default-fstype=ext4
+            #- --feature-gates=Topology=true
+            #- --strict-topology
             env:
             - name: ADDRESS
               value: /csi/csi.sock
@@ -904,13 +906,13 @@ data:
 kind: ConfigMap
 metadata:
   name: csi-manifests
-  namespace: {{ .Values.namespace | quote }}
+  namespace: {{ .Release.Namespace }}
 ---
 apiVersion: v1
 kind: Secret
 metadata:
   name: cloud-provider-vsphere-credentials
-  namespace: {{ .Values.namespace | quote }}
+  namespace: {{ .Release.Namespace }}
 stringData:
   data: |-
     apiVersion: v1
@@ -1167,4 +1169,4 @@ data:
 kind: ConfigMap
 metadata:
   name: cpi-manifests
-  namespace: {{ .Values.namespace | quote }}
+  namespace: {{ .Release.Namespace }}

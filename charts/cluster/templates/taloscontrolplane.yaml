@@ -1,8 +1,8 @@
 apiVersion: controlplane.cluster.x-k8s.io/v1alpha3
 kind: TalosControlPlane
 metadata:
-  name: {{ .Values.cluster.name | quote }}
-  namespace: {{ .Values.namespace | quote }}
+  name: {{ .Release.Name }}
+  namespace: {{ .Release.Namespace }}
 spec:
   controlPlaneConfig:
     controlplane:
@@ -14,7 +14,7 @@ spec:
           - dhcp: true
             interface: eth0
             vip:
-              ip: {{ .Values.controlPlaneEndpointIP | quote }}
+              ip: {{ quote .Values.controlPlane.endpointIP }}
           - dhcp: false
             interface: eth1
       - op: add
@@ -34,31 +34,22 @@ spec:
         path: /cluster/proxy
         value:
           disabled: true
-      - op: add
-        path: /cluster/discovery
-        value:
-          enabled: true
       - op: replace
         path: /cluster/controlPlane
         value:
-          endpoint: "https://{{ .Values.controlPlaneEndpointIP }}:{{ .Values.controlPlaneEndpointPort }}"
+          endpoint: "https://{{ .Values.controlPlane.endpointIP }}:{{ .Values.controlPlane.endpointPort }}"
       - op: add
         path: /machine/certSANs
         value:
-        - {{ .Values.controlPlaneEndpointIP | quote }}
-      - op: add
-        path: /machine/time
-        value:
-          disabled: false
-          servers: {{ .Values.ntpServers }}
+        -  {{ quote .Values.controlPlane.endpointIP }}
       generateType: controlplane
   infrastructureTemplate:
     apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
     kind: VSphereMachineTemplate
-    name: {{ .Values.cluster.name }}-{{ .Values.kubernetesVersion }}
-  replicas: {{ .Values.controlPlane.machineCount }}
+    name: {{ .Release.Name }}-{{ .Values.versions.kubernetes }}
+  replicas: {{ .Values.controlPlane.replicas }}
   rolloutStrategy:
     rollingUpdate:
       maxSurge: 1
     type: RollingUpdate
-  version: {{ .Values.kubernetesVersion | quote }}
+  version: {{ .Values.versions.kubernetes }}

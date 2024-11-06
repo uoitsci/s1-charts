@@ -1,35 +1,35 @@
 apiVersion: cluster.x-k8s.io/v1beta1
 kind: MachineDeployment
 metadata:
-  {{- if .Values.autoscaler.enabled }}
+  {{- if .Values.workers.autoscaler.enable }}
   annotations:
-    cluster.x-k8s.io/cluster-api-autoscaler-node-group-max-size: {{ .Values.autoscaler.size.max | quote }}
-    cluster.x-k8s.io/cluster-api-autoscaler-node-group-min-size: {{ .Values.autoscaler.size.min | quote }}
+    cluster.x-k8s.io/cluster-api-autoscaler-node-group-max-size: {{ quote .Values.workers.autoscaler.size.max }}
+    cluster.x-k8s.io/cluster-api-autoscaler-node-group-min-size: {{ quote .Values.workers.autoscaler.size.min }}
   {{- end }}
   labels:
-    cluster.x-k8s.io/cluster-name: {{ .Values.cluster.name | quote }}
-  name: "{{ .Values.cluster.name }}-md-0"
-  namespace: {{ .Values.namespace | quote }}
+    cluster.x-k8s.io/cluster-name: {{ .Release.Name }}
+  name: {{ .Release.Name }}-md-0
+  namespace: {{ .Release.Namespace }}
 spec:
-  clusterName: {{ .Values.cluster.name | quote }}
-  {{- if not .Values.autoscaler.enabled }}
-  replicas: {{ .Values.worker.machineCount }}
+  clusterName: {{ .Release.Name }}
+  {{- if not .Values.workers.autoscaler.enabled }}
+  replicas: {{ .replicas }}
   {{- end }}
   selector:
     matchLabels: {}
   template:
     metadata:
       labels:
-        cluster.x-k8s.io/cluster-name: {{ .Values.cluster.name | quote }}
+        cluster.x-k8s.io/cluster-name: {{ .Release.Name }}
     spec:
       bootstrap:
         configRef:
           apiVersion: bootstrap.cluster.x-k8s.io/v1alpha3
           kind: TalosConfigTemplate
-          name: "{{ .Values.cluster.name }}-md-0"
-      clusterName: {{ .Values.cluster.name | quote }}
+          name: {{ .Release.Name }}
+      clusterName: {{ .Release.Name }}
       infrastructureRef:
         apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
         kind: VSphereMachineTemplate
-        name: "{{ .Values.cluster.name }}-worker-{{ .Values.kubernetesVersion }}"
-      version: {{ .Values.kubernetesVersion | quote }}
+        name: {{ .Release.Name }}-{{ .Values.versions.kubernetes }}-worker
+      version: {{ quote .Values.versions.kubernetes }}

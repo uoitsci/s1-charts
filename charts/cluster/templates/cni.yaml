@@ -7,7 +7,7 @@ spec:
     matchLabels:
       ciliumCNI: enabled
   releaseName: cilium
-  version: 1.17.0-pre.1
+  version: 1.17.0-pre.2
   repoURL: https://helm.cilium.io/
   chartName: cilium
   namespace: kube-system

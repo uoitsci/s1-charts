@@ -1,0 +1,60 @@
+---
+apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
+kind: VSphereMachineTemplate
+metadata:
+  name: "{{ .Release.Name }}-{{ .Values.versions.kubernetes }}"
+  namespace: {{ quote .Values.namespace }}
+spec:
+  template:
+    spec:
+      cloneMode: linkedClone
+      customVMXKeys:
+        disk.EnableUUID: "true"
+      datacenter: {{ quote .Values.vsphere.datacenter }}
+      datastore: {{ quote .Values.vsphere.datastore }}
+      diskGiB: 250
+      folder: {{ quote .Values.vsphere.folder }}
+      memoryMiB: 8192
+      network:
+        devices:
+        - dhcp4: true
+          networkName: {{ quote .Values.vsphere.network }}
+      numCPUs: 2
+      os: Linux
+      powerOffMode: trySoft
+      resourcePool: {{ quote .Values.vsphere.resourcePool }}
+      server: {{ quote .Values.vsphere.server }}
+      storagePolicyName: {{ quote .Values.vsphere.storagePolicy }}
+      template: {{ quote .Values.vsphere.template }}
+      thumbprint: {{ quote .Values.vsphere.tlsThumbprint }}
+---
+apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
+kind: VSphereMachineTemplate
+metadata:
+  name: "{{ .Release.Name }}-{{ .Values.versions.kubernetes }}-worker"
+  namespace: {{ quote .Values.namespace }}
+spec:
+  template:
+    spec:
+      cloneMode: linkedClone
+      customVMXKeys:
+        disk.EnableUUID: "true"
+      datacenter: {{ quote .Values.vsphere.datacenter }}
+      datastore: {{ quote .Values.vsphere.datastore }}
+      diskGiB: 250
+      folder: {{ quote .Values.vsphere.folder }}
+      memoryMiB: 32768
+      network:
+        devices:
+        - dhcp4: true
+          networkName: {{ quote .Values.vsphere.network }}
+        - dhcp4: true
+          networkName: {{ quote .Values.vsphere.networkPublic }}
+      numCPUs: 8
+      os: Linux
+      powerOffMode: trySoft
+      resourcePool: {{ quote .Values.vsphere.resourcePool }}
+      server: {{ quote .Values.vsphere.server }}
+      storagePolicyName: {{ quote .Values.vsphere.storagePolicy }}
+      template: {{ quote .Values.vsphere.template }}
+      thumbprint: {{ quote .Values.vsphere.tlsThumbprint }}
