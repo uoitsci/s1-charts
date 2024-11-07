@@ -63,6 +63,8 @@ data:
     apiVersion: v1
     kind: Namespace
     metadata:
+      labels:
+        pod-security.kubernetes.io/enforce: privileged
       name: vmware-system-csi
     ---
     apiVersion: storage.k8s.io/v1
@@ -1093,7 +1095,7 @@ data:
           priorityClassName: system-node-critical
           containers:
           - name: vsphere-cpi
-            image: registry.k8s.io/cloud-pv-vsphere/cloud-provider-vsphere:{{ .Values.cpiImagek8sVersion }}
+            image: registry.k8s.io/cloud-pv-vsphere/cloud-provider-vsphere:{{ .Values.versions.cpi }}
             imagePullPolicy: IfNotPresent
             args:
               - --cloud-provider=vsphere
@@ -1156,12 +1158,12 @@ data:
           port: 443
           secretName: cloud-provider-vsphere-credentials
           secretNamespace: kube-system
-          thumbprint: {{ .Values.vsphere.tlsThumbprint | quote }}
+          thumbprint: {{ quote .Values.vsphere.tlsThumbprint }}
         vcenter:
           {{ .Values.vsphere.server }}:
             datacenters:
-            - {{ .Values.vsphere.datacenter | quote }}
-            server: {{ .Values.vsphere.server | quote }}
+            - {{ quote .Values.vsphere.datacenter }}
+            server: {{ quote .Values.vsphere.server }}
     kind: ConfigMap
     metadata:
       name: cloud-config
