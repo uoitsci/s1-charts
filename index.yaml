@@ -3,6 +3,16 @@ entries:
   cluster:
   - apiVersion: v2
     appVersion: v1.0
+    created: "2024-11-16T12:35:57.722532569Z"
+    description: Helm chart for creating Cluster API resources for Talos and vSphere
+    digest: c69e535d6360d55585fb4a85c23a71b69c3c71c06360e977fb3ba43615a28851
+    name: cluster
+    type: application
+    urls:
+    - https://github.com/uoitsci/s1-charts/releases/download/cluster-0.1.6/cluster-0.1.6.tgz
+    version: 0.1.6
+  - apiVersion: v2
+    appVersion: v1.0
     created: "2024-11-07T11:41:36.79935851Z"
     description: Helm chart for creating Cluster API resources for Talos and vSphere
     digest: 8cf172f05c8bccdbe1b4edc22bdc9051c0f50e83eeeff25ec67d6878f3b8e851
@@ -61,4 +71,4 @@ entries:
     urls:
     - https://github.com/uoitsci/s1-charts/releases/download/cluster-0.1.0/cluster-0.1.0.tgz
     version: 0.1.0
-generated: "2024-11-07T11:41:36.799388717Z"
+generated: "2024-11-16T12:35:57.722587691Z"
