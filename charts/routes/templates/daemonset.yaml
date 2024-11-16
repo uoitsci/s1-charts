@@ -1,0 +1,49 @@
+---
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: routes
+  namespace: kube-system
+spec:
+  selector:
+    matchLabels:
+      app: routes
+  template:
+    metadata:
+      labels:
+        app: routes
+    spec:
+      hostNetwork: true
+      containers:
+      - name: routes
+        image: alpine
+        command:
+        - /bin/sh
+        - -c
+        args:
+        - |
+          set -xe
+          ip_rule_replace() {
+            ip rule del $@ || true
+            ip rule add $@
+          }
+
+          # Setup custom routing table
+          ip route replace {{ .Values.publicCIDR }} dev eth1 table {{ .Values.tableNumber }}
+          ip route replace default via {{ .Values.publicGateway }} table {{ .Values.tableNumber }}
+
+          # Setup policy based routing
+          ip_rule_replace from {{ .Values.publicCIDR }} lookup {{ .Values.tableNumber }}
+          ip_rule_replace from {{ .Values.publicCIDR }} to {{ .Values.podCIDR }} lookup main
+
+          exec sleep infinity
+        securityContext:
+          privileged: true
+      terminationGracePeriodSeconds: 0
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: node-role.kubernetes.io/control-plane
+                operator: DoesNotExist

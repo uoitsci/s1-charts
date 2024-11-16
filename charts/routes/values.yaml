@@ -1,0 +1,5 @@
+tableNumber: 100
+podCIDR: 10.244.0.0/16
+publicCIDR: 127.0.0.0/8
+publicGateway: 127.0.0.1
+publicIface: eth1
