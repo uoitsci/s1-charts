@@ -71,4 +71,15 @@ entries:
     urls:
     - https://github.com/uoitsci/s1-charts/releases/download/cluster-0.1.0/cluster-0.1.0.tgz
     version: 0.1.0
-generated: "2024-11-16T12:35:57.722587691Z"
+  routes:
+  - apiVersion: v2
+    appVersion: 0.0.1
+    created: "2024-11-16T12:46:58.985071337Z"
+    description: Policy-based routing for k8s clusters
+    digest: ccf043639ca97724dc5ad608018951887127bddb42a2389355d58a5c0488f949
+    name: routes
+    type: application
+    urls:
+    - https://github.com/uoitsci/s1-charts/releases/download/routes-0.1.0/routes-0.1.0.tgz
+    version: 0.1.0
+generated: "2024-11-16T12:46:58.985095011Z"
