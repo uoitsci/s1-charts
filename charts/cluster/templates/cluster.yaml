@@ -3,7 +3,9 @@ kind: Cluster
 metadata:
   labels:
     cluster.x-k8s.io/cluster-name: {{ .Release.Name }}
+    {{- if .Release.IsInstall }}
     ciliumCNI: enabled
+    {{- end }}
   name: {{ .Release.Name }}
   namespace: {{ .Release.Namespace }}
 spec:

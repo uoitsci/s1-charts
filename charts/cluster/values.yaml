@@ -3,6 +3,7 @@ versions:
   kubernetes: v1.31.1
   talos: v1.8
   cpi: v1.31.0
+  cni: 1.17.0-pre.2
 
 # Control Plane Configuration
 controlPlane:

@@ -2,7 +2,7 @@
 apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
 kind: VSphereMachineTemplate
 metadata:
-  name: "{{ .Release.Name }}-{{ .Values.versions.kubernetes }}"
+  name: {{ .Release.Name }}-{{ toJson .Values | sha256sum }}
   namespace: {{ quote .Values.namespace }}
 spec:
   template:
@@ -31,7 +31,7 @@ spec:
 apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
 kind: VSphereMachineTemplate
 metadata:
-  name: "{{ .Release.Name }}-{{ .Values.versions.kubernetes }}-worker"
+  name: {{ .Release.Name }}-worker-{{ toJson .Values | sha256sum }}
   namespace: {{ quote .Values.namespace }}
 spec:
   template:
