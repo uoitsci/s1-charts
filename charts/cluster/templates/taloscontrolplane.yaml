@@ -46,7 +46,7 @@ spec:
   infrastructureTemplate:
     apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
     kind: VSphereMachineTemplate
-    name: {{ .Release.Name }}-{{ .Values.versions.kubernetes }}-{{ toJson .Values | sha256sum }}
+    name: {{ .Release.Name }}-{{ toJson .Values | sha256sum }}
   replicas: {{ .Values.controlPlane.replicas }}
   rolloutStrategy:
     rollingUpdate:
