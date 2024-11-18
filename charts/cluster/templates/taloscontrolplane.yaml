@@ -22,9 +22,9 @@ spec:
         value:
           enabled: true
       - op: add
-          path: /machine/kubelet/extraArgs
-          value:
-            rotate-server-certificates: true
+        path: /machine/kubelet/extraArgs
+        value:
+          rotate-server-certificates: true
       - op: add
         path: /machine/install
         value:
