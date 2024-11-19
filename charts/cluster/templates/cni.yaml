@@ -43,3 +43,33 @@ spec:
     k8sServiceHost: localhost
     k8sServicePort: 7445
     kubeProxyReplacement: true
+    
+    l2announcements:
+      enabled: true
+
+    ingressController:
+      enabled: true
+      default: true
+
+    envoyConfig:
+      enabled: true
+
+    #gatewayAPI:
+    #  enabled: true
+
+    devices:
+      - eth0
+      - eth1
+
+    bpf:
+      masquerade: true
+      # Workaround for cilium/cilium#31653
+      hostLegacyRouting: true
+      hostRouting: true
+
+    externalIPs:
+      enabled: true
+
+    # Workaround for cilium/cilium#24318
+    endpointRoutes:
+      enabled: true
