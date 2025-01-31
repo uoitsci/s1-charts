@@ -27,11 +27,9 @@ spec:
           apiVersion: bootstrap.cluster.x-k8s.io/v1alpha3
           kind: TalosConfigTemplate
           name: {{ .Release.Name }}-{{ toJson .Values | sha256sum }}
-          namespace: {{ .Release.Namespace }}
       clusterName: {{ .Release.Name }}
       infrastructureRef:
         apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
         kind: VSphereMachineTemplate
         name: {{ .Release.Name }}-worker-{{ toJson .Values | sha256sum }}
-        namespace: {{ .Release.Namespace }}
       version: {{ quote .Values.versions.kubernetes }}
