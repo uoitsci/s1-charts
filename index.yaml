@@ -203,6 +203,16 @@ entries:
     version: 0.1.0
   gatewayapicrds:
   - apiVersion: v2
+    appVersion: 1.6.3
+    created: "2026-11-19T17:33:21.151942413Z"
+    description: Gateway API CRDs (standard channel) for k8s clusters
+    digest: b853d4440895674ee21cba4925a20730fcf6361a76398f4864c4cac11b2f6991
+    name: gatewayapicrds
+    type: application
+    urls:
+    - https://github.com/uoitsci/s1-charts/releases/download/gatewayapicrds-0.2.0/gatewayapicrds-0.2.0.tgz
+    version: 0.2.0
+  - apiVersion: v2
     appVersion: 1.2.0
     created: "2024-12-04T14:29:01.437201907Z"
     description: Experimental Gateway API CRDs for k8s clusters
@@ -223,4 +233,4 @@ entries:
     urls:
     - https://github.com/uoitsci/s1-charts/releases/download/routes-0.1.0/routes-0.1.0.tgz
     version: 0.1.0
-generated: "2025-01-31T19:10:14.141574625Z"
+generated: "2026-11-19T17:33:21.151986068Z"
